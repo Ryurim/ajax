@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 응답</title>
+</head>
+<body>
+    <h2>fetch() 함수 사용</h2>
+    <hr>
+
+    <script>
+        function json2Str(obj) {
+            for (let s in obj) {
+                document.body.innerHTML += `<h3>${obj[s]}</h3>`;
+            }
+        }
+
+        fetch('contents/sample.json')
+        .then(response => {
+            return response.json();
+        })
+        .then(obj => json2Str(obj));
+        
+    </script>
+</body>
+</html>

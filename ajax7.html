@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 테스트</title>
+</head>
+<body>
+    <h2>Ajax로 이미지 요청 후 출력</h2>
+    <button onclick="getImage();">이미지 가져오기</button>
+
+    <script>
+        let imgNo = 1;
+        function getImage() {
+            imgNo = (imgNo >= 3 ? 1 : imgNo+1);
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob'; //이미지 파일 처리
+            xhr.open("GET", `images/img${imgNo}.png`, true);
+            xhr.send();
+            xhr.onload = function(e) {
+                if (xhr.status == 200) {
+                    const blob = e.target.response;
+                    const img = document.createElement("img");
+                    img.width = 200;
+                    img.height = 200;
+                    img.src = URL.createObjectURL(blob);
+                    document.body.appendChild(img);
+                }
+            };
+        }
+    </script>
+</body>
+</html>

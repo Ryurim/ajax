@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX 통신 테스트</title>
+</head>
+<body>
+    <h1>AJAX 통신 테스트</h1>
+    <hr>
+
+    <a href="contents/html1.html">링크로 직접 요청</a>
+    <hr>
+
+    <button onclick="location.href='contents/html1.html';">버튼 클릭하여 요청</button>
+    <hr>
+
+    <button onclick="requestAjax()">버튼 클릭하여 AJAX 요청</button>
+    <div id="result"></div>
+
+    <script>
+        function requestAjax() {
+            const xhr = new XMLHttpRequest(); //객체 생성
+            xhr.open("GET", "contents/html1.html", true); // 전송요청 : GET, POST, (HEAD, PUT, DELETE => 얘는 WAS 에 따라 동작이 다를 수 있음) 내가 원하는 URL 호출. true : 비동기 방식으로 요청. 
+            xhr.send(); //전송!
+            xhr.onload = function() {   //onreadstatechange 역할을 함. 전송된 결과가 여기서 처리됨! 이게 콜백 함수임,,
+                //처리하는 루틴은 여기에 들어감
+                const result = document.getElementById("result"); 
+                result.innerHTML += xhr.responseText + "<hr>";
+            };
+
+        }
+    </script>
+
+</body>
+</html>

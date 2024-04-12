@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 테스트</title>
+
+    <script>
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "contents/sample2.json", true);
+        xhr.send();
+        xhr.onload = function() {
+            const str = xhr.responseText;
+            const result = JSON.parse(str);
+            const objStd = result.students;
+           
+
+            for (let i=0; i<objStd.length; i++) {
+                document.body.innerHTML += `<h3>${objStd[i]["name"]} : ${objStd[i]["age"]} : ${objStd[i]["kind"]} </h3>`;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h2>JSON 응답</h2>
+    <hr>
+</body>
+</html>

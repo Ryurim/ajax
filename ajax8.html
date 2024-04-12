@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX 요청 테스트</title>
+</head>
+<body>
+    <h1>AJAX 요청 테스트</h1>
+
+    <hr>
+
+    <div></div>
+
+    <script>
+       // let url = "contents/html1.html";
+       let url = "https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=75474bdfc6c0a4eb738939dd66c101b5&targetDt=20240401";
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.send();
+        xhr.addEventListener("load", function() {
+            document.getElementsByTagName("div")[0].textContent = xhr.responseText; // 응답 결과를 넣을게!
+            
+        });
+    </script>
+</body>
+</html>

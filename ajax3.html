@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML 응답 파싱</title>
+</head>
+<body>
+    <h2>XML 응답</h2>
+    <hr>
+
+    <script>
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "contents/sample2.xml", true);
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status == 200) {
+                const xml = xhr.responseXML;
+                const rootE = xml.getElementsByTagName("testxmls");
+                let output = "";
+                let testXmlNode = "";
+
+                for (let i=0; i<rootE[0].getElementsByTagName("testxml").length; i++) {
+                    output = "";
+                    testXmlNode = "";
+                    testXmlNode = rootE[0].getElementsByTagName("testxml")[i];
+                    for (let j=1; j<testXmlNode.childNodes.length; j+=2) {
+                        output += `<h3>${testXmlNode.childNodes[j].firstChild.nodeValue}</h3>`;
+                    }
+                    document.body.innerHTML += output;
+                }        
+            } else {
+                document.body.innerHTML += "<h3>요청 실패!</h3>";
+            }
+        };
+    </script>
+</body>
+</html>

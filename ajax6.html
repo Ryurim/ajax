@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 테스트</title>
+
+    <script>
+        let num = 1;
+
+        setInterval(function() { // 함수이름, 초
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `contents/news${num}.json`, true);
+            xhr.send();
+            xhr.onload = function(e) {
+                if (xhr.status == 200) {
+                    const str = xhr.responseText;
+                    const obj = JSON.parse(str); //원래 형태로 복원
+                    const target = document.getElementById("news");
+                    target.innerHTML = obj.news;
+                } else {
+
+                }
+            };
+            num++;
+            num = (num > 3 ? 1 : num);
+        }, 3000);
+    </script>
+</head>
+<body>
+    <h2>2초 간격으로 뉴스 출력</h2>
+    <table>
+        <tr><th>뉴스 내용</th></tr>
+        <tr><td id="news">대기중..................</td></tr>
+    </table>
+</body>
+</html>

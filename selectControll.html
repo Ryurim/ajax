@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>select controll</title>
+
+    </head>
+
+    <body>
+        <label for="selectOption">색상선택</label>
+        <select id="selectOption">
+            <option value="red">red</option>
+            <option value="green">green</option>
+            <option value="yellow">yellow</option>
+            <option value="blue">blue</option>
+            <option value="gray">gray</option>
+        </select>
+        <label for="name">고객성명</label>
+        <input type="text" id="name" >
+        <label for="tel">전화번호</label>
+        <input type="text" id="tel" >
+        <input type="button" value="추가" onclick="add()">
+
+        <ul id="list">
+
+        </ul>
+
+        <script>
+
+            function add() {
+                let selectOption = document.querySelector("#selectOption");
+                let name = document.querySelector("#name");
+                let tel = document.querySelector("#tel");
+                let list = document.querySelector("#list");
+
+                saveList(selectOption.value, name.value, tel.value, list);
+            }
+
+            function saveList(select, name, tel, list) {
+                localStorage.setItem(select, name+ " / " + tel);
+                console.log("li : " + localStorage.getItem(select));
+                showList(select, name, tel, list);
+            }
+            
+            function showList(select, name, tel, list) {
+                    var li = document.createElement("li");
+                    var text = document.createTextNode(localStorage.getItem(localStorage.key()));
+                    li.appendChild(text);
+                    li.style.backgroundColor = localStorage.key(0);
+                    list.appendChild(li);
+            }
+            
+
+            function removeList(key) {
+                localStorage.removeItem(key);
+            }
+
+            function show() {
+                
+            }
+
+        </script>
+    </body>
+</html>

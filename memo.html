@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>메모장</title>
+        <script>
+            //전역변수 선언
+            let msg, info;
+
+            //페이지가 처음 로딩될 때 txtBox 객체를 msg에 저장
+            function pageLoad() {
+                msg = document.getElementById("txtBox");
+                msg.value = window.localStorage.getItem("memo");
+                info = document.getElementById("info");
+
+                forEachKey(getKeyInfo);
+                displayItemsInfo();
+            }
+
+            //로컬 스토리지에 memo값 저장
+            function saveText() {
+                info = document.getElementById("info");
+                info.style.display = "block";
+                window.localStorage.setItem("memo", msg.value);
+
+                forEachKey(getKeyInfo);
+                displayItemsInfo();
+                console.log("memo : " + localStorage.getItem("memo"));
+            }
+
+            //로컬 스토리지에서 저장내역 삭제
+            function clr() {
+                msg.value = "";
+                localStorage.clear();
+                info.style.display = "none";
+            }
+
+            function getKeyInfo(param) {
+                console.log("param : " + param);
+            }
+
+            // 로컬 스토리지에 있는 정보 출력
+            function displayItemsInfo() {   
+                for (let i=0; i<localStorage.length; i++) {
+                    console.log("displayItemsInfo : " + localStorage.getItem(localStorage.key(i)));
+                }
+            }
+
+            // 이 함수는 잘 봐두기 callback 메서드 이용한 익명함수의 callback 메서드 처리할 때 많이 사용
+            // 재귀함수에서 많이 사용하는데 무한루프 빠지지 않게 탈출포인트 만들어주기
+            function forEachKey(callback) {
+                for (let i=0; i<localStorage.length; i++) {
+                    callback(localStorage.key(i));
+                }
+            }
+        </script>
+    </head>
+    <!-- 5 -->
+    <body onload="pageLoad();">
+        <h1>스토리지를 이용한 메모장</h1>
+        <h2>메시지</h2>
+        <!-- 
+            키가 눌렸다가 올라올 때. textarea에서 입력된 값 처리할 때 keyup 사용함! keydown 안씀. 유니코드 문자일 경우엔 keydown이 먹지 않기 때문
+            keydown 은 이벤트 버블링이 keydown keypress keyup 으로 버블링이 세번 발생함.
+            꼭 textarea에선 keyup 사용하기!!
+        -->
+        <textarea id="txtBox" cols="50" rows="5" onkeyup="saveText();"></textarea>
+        <br/>
+        <br/>
+        <input type="button" value="메시지 비우기" onclick="clr();">
+
+        <p id="info" style="display:none;">메모 내용이 저장되었습니다.</p>
+    </body>
+</html>

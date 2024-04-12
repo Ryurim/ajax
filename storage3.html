@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage 연습</title>
+
+    
+</head>
+<body>
+    <h1>스토리지 연습</h1>
+
+    <form>
+        <label>색상선택
+            <select id="selectColor">
+                <option value="red">red</option>
+                <option value="green">green</option>
+                <option value="blue">blue</option>
+                <option value="yellow">yellow</option>
+                <option value="gray">gray</option>
+            </select>
+        </label>
+        <label>고객성명 : 
+            <input type="text" name="guestName" id="guestName" value="">
+        </label>
+       <label>전화번호 : 
+            <input type="text" name="guestPhone" id="guestPhone" value="">
+       </label>
+
+       <input type="button" id="addButton" value="추가">
+    </form>
+    <ul id="guestList">
+
+    </ul>
+
+    <script>
+       function init() {
+            let addBtn = document.getElementById("addButton");
+            addBtn.onclick = addButtonclick;
+
+            let guestArray = localStorage.getItem("guestArray");
+            if (guestArray != null && guestArray != undefined && guestArray != "undefined") {
+                guestArray = JSON.parse(guestArray); // 문자열을 배열로 변환. 저장되어있는 값을 가져올 땐 배열로 변환해서 갖고오기. 
+            } else {
+                //guestArray = []; // ['a', 'b', 'c'] 라면 ? JSON.stringify 해주면 array나 object가 아닌 그냥 문자열로 변환
+                //localStorage.setItem("guestArray", JSON.stringify(guestArray)); // 배열을 문자열로 변환. 값을 보낼 때는 스트링으로 변환해서 보내기. 안해주면 object로밖에 안넘어가서 깨짐. 값을 읽어올 때는 array나 object 타입이면 stringify 해주기!!
+            }
+
+           for (let i=0; i<localStorage.length; i++) {
+                let key = guestArray[i];
+                let guestObject = JSON.parse(localStorage[key]); // 
+                addDom2(key, guestObject);
+           }
+            
+       }
+
+        function addButtonclick() {
+            let guestArray = localStorage.getItem("guestArray");
+            if (guestArray != null && guestArray != undefined && guestArray != "undefined") {
+                guestArray = JSON.parse(guestArray); // 문자열을 배열로 변환. 저장되어있는 값을 가져올 땐 배열로 변환해서 갖고오기. 
+            } else {
+                guestArray = []; // ['a', 'b', 'c'] 라면 ? JSON.stringify 해주면 array나 object가 아닌 그냥 문자열로 변환
+                localStorage.setItem("guestArray", JSON.stringify(guestArray)); // 배열을 문자열로 변환. 값을 보낼 때는 스트링으로 변환해서 보내기. 안해주면 object로밖에 안넘어가서 깨짐.
+            }
+
+            let selectColor = document.getElementById("selectColor");
+            let gName = document.getElementById("guestName").value;
+            let gPhone = document.getElementById("guestPhone").value;
+            //let color = selectColor[selectColor.selectedIndex].value; //이렇게 갖고와도 된다!
+            let color = selectColor.value;
+            
+
+            let now = new Date();
+            let time = now.getTime(); // 현재시간의 타임스탬프 (1234345~~) 9자리~12자리 정도 숫자로 되어있음
+            let key = "guestName" + time;
+
+
+            // let gName = document.getElementById("guestName").value;
+            // let gPhone = document.getElementById("guestPhon").value;
+            // let selectColor = document.getElementById("selectColor");
+            // let color = selectColor[selectColor.selectedIndex].value;
+
+            if (gName != "" && gPhone != "" && color != "") {
+
+                //{"objName" : "이름", "objPhone" : "010-1234-5678", "objColor" : "color"}
+                let guestObject = { // 객체 만들어
+                    "objName" : gName,
+                    "objPhone" : gPhone,
+                    "objColor" : color
+                };
+                
+                // 스토리지에 저장되는 값
+                // 타임스탬프 키로 : JSON object 저장
+                // guestArray 키로 : guestArray 값(키 저장용) 저장
+                localStorage.setItem(key, JSON.stringify(guestObject));
+
+                guestArray.push(key);
+                localStorage.setItem("guestArray", JSON.stringify(guestArray));
+
+                addDom2(key, guestObject);
+            }
+
+
+            //addDom(key, gName, gPhone, color);
+           // addDom2(key, 객체정보);
+
+        }
+
+        function addDom(key, gName, gPhone, color) {
+            console.log("key : "+ key +"gName : "+ gName.value +", gPhone : "+ gPhone.value +", color : "+ color);
+
+            let span = document.createElement("span");
+            span.setAttribute("class", "guest");
+            span.innerHTML = gName + " / " + gPhone;
+
+            let li = document.createElement("li");
+            li.setAttribute("id", key);
+            li.style.backgroundColor = "yellow";
+            li.style.color=color;
+            li.append(span); //  <li id=key style="background-color:yellow color color:color;"> <span> gName + " / " + gPhone </span> </li>
+            li.onclick = clickLi;
+
+            let guestList = document.getElementById("guestList");
+            guestList.appendChild(li);
+        } 
+
+        //{"objName" : "이름", "objPhone" : "010-1234-5678", "objColor" : "color" }
+        function addDom2(key, guestObject) { // array 객체 만드는 함수
+            let span = document.createElement("span");
+            span.setAttribute("class", "guest");
+            span.innerHTML = guestObject.objName + " / " + guestObject.objPhone; //JSON 객체
+
+            let li = document.createElement("li");
+            li.setAttribute("id", key);
+            li.style.backgroundColor = "yellow";
+            li.style.color = guestObject.objColor;
+            li.append(span); //  <li id=key style="background-color:yellow color color:color;"> <span> gName + " / " + gPhone </span> </li>
+            li.onclick = clickLi;
+
+            let guestList = document.getElementById("guestList");
+            guestList.appendChild(li);
+        }
+
+
+        function clickLi(e) {
+            let key = e.target.id;
+
+            if (e.target.tagName.toLowerCase() == "span") {
+                key = e.target.parentNode.id;
+            }
+            let guestArray = localStorage.getItem("guestArray");
+            guestArray = JSON.parse(guestArray);
+            removeDom(key);
+            removeStorage(key, guestArray);
+        }
+        function removeDom(key) {
+            let li = document.getElementById(key);
+            li.parentNode.removeChild(li)
+        }
+
+        function removeStorage(key , guestArray) {
+             
+            if (guestArray) {
+                for (let i=0; i<guestArray.legnth; i++) {
+                    if (key == guestArray[i]) {
+                        guestArray.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            localStorage.removeItem(key);
+            localStorage.setItem("guestArray", JSON.stringify(guestArray));
+        }
+
+        window.onload = init;
+       
+    </script>
+</body>
+</html>

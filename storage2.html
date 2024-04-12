@@ -1,0 +1,26 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>세션스토리지</title>
+
+    </head>
+    <body>
+        <h1>세션스토리지에서 데이터 저장하고 읽기</h1>
+        <h2>콘솔에서 확인하세요!!</h2>
+        <script>
+            // sessionStorage.setItem("food1", "치킨");
+            // sessionStorage.setItem("food2", "피자");
+            // sessionStorage.setItem("food3", "파전");
+
+            console.log("세션스토리지에 저장된 키 갯수 : " + sessionStorage.length);
+
+            let key, value;
+            for (let i=0; i<sessionStorage.length; i++) {
+                key = sessionStorage.key(i);
+                value = sessionStorage.getItem(key);
+                console.log("키 : " + key + ", 값 : " + value);
+            }
+        </script>
+    </body>
+</html>
